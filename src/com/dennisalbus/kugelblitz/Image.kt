@@ -13,12 +13,11 @@ class Image(private val xres: Int,
         }
     }
 
-    fun write(file: String = "/Users/dalbus/Code/kugelblitz/images/test.ppm", gamma: Double = 2.2) {
-        File(file).bufferedWriter().use {
-            it.write("P3\n$xres $yres\n255\n")
-            for (pixel in buffer) {
-                it.write("${pixel.x.roundToInt()} ${pixel.y.roundToInt()} ${pixel.z.roundToInt()}\n")
-            }
+    fun write(file: String = "/Users/dalbus/Code/kugelblitz/images/test.ppm", gamma: Double = 1.0) {
+        File(file).bufferedWriter().use { writer ->
+            writer.write("P3\n$xres $yres\n255\n")
+            buffer.map { it.pow(1 / gamma) * 255.0 }
+                    .forEach { writer.write("${it.x.roundToInt()} ${it.y.roundToInt()} ${it.z.roundToInt()}\n") }
         }
     }
 }

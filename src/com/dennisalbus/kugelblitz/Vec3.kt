@@ -51,8 +51,11 @@ class Vec3(var x: Double = 0.0,
         }
     }
 
-    fun length() = sqrt(this.x.pow(2) + this.y.pow(2) + this.z.pow(2))
+    fun pow(exponent: Double) = Vec3(this.x.pow(exponent), this.y.pow(exponent), this.z.pow(exponent))
+
     fun length2() = this.x.pow(2) + this.y.pow(2) + this.z.pow(2)
+    fun length() = sqrt(this.length2())
+
     fun normalize() {
         this /= this.length()
     }

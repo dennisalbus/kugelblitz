@@ -22,9 +22,9 @@ fun main(args: Array<String>) {
             val v = yy.toDouble() / yres.toDouble()
             val ray = Ray(origin, lowerLeftCorner + u * horizontal + v * vertical)
             val offset = (xres * yres - 1) - ((yy * xres) + xx)
-            buffer[offset] = color(ray) * 255.0
+            buffer[offset] = color(ray)
         }
     }
     val img = Image(xres, yres, buffer)
-    img.write()
+    img.write(gamma = 2.2)
 }
