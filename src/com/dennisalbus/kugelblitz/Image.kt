@@ -13,7 +13,7 @@ class Image(private val xres: Int,
         }
     }
 
-    fun write(file: String ="/Users/dalbus/Code/kugelblitz/images/test.ppm") {
+    fun write(file: String = "/Users/dalbus/Code/kugelblitz/images/test.ppm", gamma: Double = 2.2) {
         File(file).bufferedWriter().use {
             it.write("P3\n$xres $yres\n255\n")
             for (pixel in buffer) {

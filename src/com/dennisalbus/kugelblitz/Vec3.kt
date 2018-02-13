@@ -65,3 +65,4 @@ class Vec3(var x: Double = 0.0,
 }
 
 operator fun Double.times(rhs: Vec3) = Vec3(rhs.x * this, rhs.y * this, rhs.z * this)
+fun lerp(a: Vec3, b: Vec3, mix: Double) = (1.0 - mix) * a + mix * b
