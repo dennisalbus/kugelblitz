@@ -1,7 +1,19 @@
 package com.dennisalbus.kugelblitz
 
-fun color(r: Ray): Vec3 {
-    val unitDirection = r.direction.normalized()
+fun hit_sphere(center: Vec3, radius: Double, ray: Ray): Boolean {
+    val oc = ray.origin - center
+    val a = dot(ray.direction, ray.direction)
+    val b = 2.0 * dot(oc, ray.direction)
+    val c= dot(oc, oc) - radius*radius
+    val discriminant = b*b - 4.0*a*c
+    return (discriminant > 0)
+}
+
+fun color(ray: Ray): Vec3 {
+    if (hit_sphere(Vec3(0.0, 0.0, -1.0), 0.5, ray)) {
+        return Vec3(1.0, 0.0, 0.0)
+    }
+    val unitDirection = ray.direction.normalized()
     val t = 0.5 * unitDirection.y + 1.0
     return lerp(Vec3(1.0, 1.0, 1.0), Vec3(0.5, 0.7, 1.0), t)
 }
@@ -20,7 +32,7 @@ fun main(args: Array<String>) {
         for (xx in 0 until xres) {
             val u = xx.toDouble() / xres.toDouble()
             val v = yy.toDouble() / yres.toDouble()
-            val ray = Ray(origin, lowerLeftCorner + u * horizontal + v * vertical)
+            val ray = Ray(origin, (lowerLeftCorner + u * horizontal + v * vertical).normalized())
             val offset = (xres * yres - 1) - ((yy * xres) + xx)
             buffer[offset] = color(ray)
         }

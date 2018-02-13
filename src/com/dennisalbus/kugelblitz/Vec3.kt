@@ -61,7 +61,7 @@ class Vec3(var x: Double = 0.0,
     }
 
     fun normalized() = this / this.length()
-    fun dot(other: Vec3) = Vec3(this.x * other.x + this.y * other.y + this.z * other.z)
+    fun dot(other: Vec3) = this.x * other.x + this.y * other.y + this.z * other.z
     fun cross(other: Vec3) = Vec3(this.y * other.z - this.z * other.y,
             -(this.x * other.z - this.z * other.x),
             this.x * other.y - this.y * other.x)
@@ -69,3 +69,4 @@ class Vec3(var x: Double = 0.0,
 
 operator fun Double.times(rhs: Vec3) = Vec3(rhs.x * this, rhs.y * this, rhs.z * this)
 fun lerp(a: Vec3, b: Vec3, mix: Double) = (1.0 - mix) * a + mix * b
+fun dot(a: Vec3, b: Vec3) = a.x * b.x + a.y * b.y + a.z * b.z
