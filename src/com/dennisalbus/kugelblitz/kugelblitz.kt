@@ -1,17 +1,9 @@
 package com.dennisalbus.kugelblitz
 
-fun hit_sphere(center: Vec3, radius: Double, ray: Ray): Boolean {
-    val oc = ray.origin - center
-    val a = dot(ray.direction, ray.direction)
-    val b = 2.0 * dot(oc, ray.direction)
-    val c = dot(oc, oc) - radius * radius
-    val discriminant = b * b - 4.0 * a * c
-    return (discriminant > 0)
-}
-
-fun color(ray: Ray): Vec3 {
-    return if (hit_sphere(Vec3(0.0, 0.0, -1.0), 0.5, ray)) {
-        Vec3(1.0, 0.0, 0.0)
+fun color(ray: Ray, sphere: Sphere): Vec3 {
+    val hitRecord = sphere.hit(ray, 0.001, 9999.9)
+    return if (hitRecord.hit) {
+        hitRecord.normal
     } else {
         background(ray)
     }
@@ -27,21 +19,24 @@ fun main(args: Array<String>) {
     val xres = 800
     val yres = 400
 
-    val lowerLeftCorner = Vec3(-2.0, -1.0, -1.0)
+    val topLeftCorner = Vec3(-2.0, 1.0, -1.0)
     val horizontal = Vec3(4.0, 0.0, 0.0)
     val vertical = Vec3(0.0, 2.0, 0.0)
     val origin = Vec3()
 
-    val buffer: Array<Vec3> = Array(xres * yres) { Vec3() }
+    val sphere = Sphere(Vec3(0.0, 0.0, -1.0), 0.5)
+
+    val buffer = ArrayList<Vec3>()
     for (yy in 0 until yres) {
+        val linebuffer: Array<Vec3> = Array(xres) { Vec3() }
+        val v = yy.toDouble() / yres.toDouble()
         for (xx in 0 until xres) {
             val u = xx.toDouble() / xres.toDouble()
-            val v = yy.toDouble() / yres.toDouble()
-            val ray = Ray(origin, (lowerLeftCorner + u * horizontal + v * vertical).normalized())
-            val offset = (xres * yres - 1) - ((yy * xres) + xx)
-            buffer[offset] = color(ray)
+            val ray = Ray(origin, (topLeftCorner + u * horizontal - v * vertical).normalized())
+            linebuffer[xx] = color(ray, sphere)
         }
+        buffer.addAll(linebuffer)
     }
-    val img = Image(xres, yres, buffer)
+    val img = Image(xres, yres, buffer.toTypedArray())
     img.write(gamma = 2.2)
 }

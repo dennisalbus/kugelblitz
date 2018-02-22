@@ -12,6 +12,7 @@ class Vec3(var x: Double = 0.0,
     operator fun unaryPlus() = this
     operator fun unaryMinus() = Vec3(-this.x, -this.y, this.z)
     operator fun plus(rhs: Vec3) = Vec3(this.x + rhs.x, this.y + rhs.y, this.z + rhs.z)
+    operator fun plus(rhs: Double) = Vec3(this.x + rhs, this.y + rhs, this.z + rhs)
     operator fun minus(rhs: Vec3) = Vec3(this.x - rhs.x, this.y - rhs.y, this.z - rhs.z)
 
     operator fun times(rhs: Vec3) = Vec3(this.x * rhs.x, this.y * rhs.y, this.z * rhs.z)
@@ -68,5 +69,6 @@ class Vec3(var x: Double = 0.0,
 }
 
 operator fun Double.times(rhs: Vec3) = Vec3(rhs.x * this, rhs.y * this, rhs.z * this)
+operator fun Double.plus(rhs: Vec3) = Vec3(rhs.x + this, rhs.y + this, rhs.z + this)
 fun lerp(a: Vec3, b: Vec3, mix: Double) = (1.0 - mix) * a + mix * b
 fun dot(a: Vec3, b: Vec3) = a.x * b.x + a.y * b.y + a.z * b.z
