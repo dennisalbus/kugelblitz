@@ -15,14 +15,14 @@ class Sphere(val center: Vec3, val radius: Double) : Hitable {
             if (t < tMax && t > tMin) {
                 hitRecord.t = t
                 hitRecord.hitp = ray.point_at_parameter(t)
-                hitRecord.normal = 0.5 * ((hitRecord.hitp - center).normalized() + 1.0)
+                hitRecord.normal = (hitRecord.hitp - center).normalized()
                 return true
             }
             t = (-b + sqrt(discriminant)) / (2.0 * a)
             if (t < tMax && t > tMin) {
                 hitRecord.t = t
                 hitRecord.hitp = ray.point_at_parameter(t)
-                hitRecord.normal = 0.5 * ((hitRecord.hitp - center).normalized() + 1.0)
+                hitRecord.normal = (hitRecord.hitp - center).normalized()
                 return true
             }
         }
