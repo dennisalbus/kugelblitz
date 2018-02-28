@@ -2,7 +2,7 @@ package com.dennisalbus.kugelblitz
 
 import kotlin.math.sqrt
 
-class Sphere(val center: Vec3, val radius: Double) : Hitable {
+class Sphere(val center: Vec3, val radius: Double, val material: Material) : Hitable {
     override fun hit(ray: Ray, tMin: Double, tMax: Double, hitRecord: HitRecord): Boolean {
         val oc = ray.origin - center
         val a = dot(ray.direction, ray.direction)
@@ -16,6 +16,7 @@ class Sphere(val center: Vec3, val radius: Double) : Hitable {
                 hitRecord.t = t
                 hitRecord.hitp = ray.point_at_parameter(t)
                 hitRecord.normal = (hitRecord.hitp - center).normalized()
+                hitRecord.material = material
                 return true
             }
             t = (-b + sqrt(discriminant)) / (2.0 * a)
@@ -23,6 +24,7 @@ class Sphere(val center: Vec3, val radius: Double) : Hitable {
                 hitRecord.t = t
                 hitRecord.hitp = ray.point_at_parameter(t)
                 hitRecord.normal = (hitRecord.hitp - center).normalized()
+                hitRecord.material = material
                 return true
             }
         }
