@@ -62,7 +62,7 @@ class Vec3(var x: Double = 0.0,
     }
 
     fun normalized() = this / this.length()
-    fun dot(other: Vec3) = this.x * other.x + this.y * other.y + this.z * other.z
+    infix fun dot(other: Vec3) = this.x * other.x + this.y * other.y + this.z * other.z
     fun cross(other: Vec3) = Vec3(this.y * other.z - this.z * other.y,
             -(this.x * other.z - this.z * other.x),
             this.x * other.y - this.y * other.x)

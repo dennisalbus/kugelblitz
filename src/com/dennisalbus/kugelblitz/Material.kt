@@ -18,6 +18,15 @@ class Lambertian(val albedo: Vec3) : Material {
     }
 }
 
+class Metal(val albedo: Vec3, val roughness: Double = 0.0) : Material {
+    override fun scatter(rayIn: Ray, hitRecord: HitRecord, scatterEvent: ScatterEvent): Boolean {
+        val reflected = reflect(rayIn.direction.normalized(), hitRecord.normal)
+        scatterEvent.scatteredRay = Ray(hitRecord.hitp, (reflected + roughness * randomInUnitSphere()).normalized())
+        scatterEvent.attenuation = albedo
+        return reflected dot hitRecord.normal > 0
+    }
+}
+
 fun randomInUnitSphere(): Vec3 {
     var P: Vec3
     val rand = Random()
@@ -26,3 +35,5 @@ fun randomInUnitSphere(): Vec3 {
     } while (P.length2() >= 1.0)
     return P
 }
+
+fun reflect(v: Vec3, n: Vec3): Vec3 = v - (2.0 * v dot n) * n
